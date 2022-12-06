@@ -1,61 +1,50 @@
 package com.example.taskproject;
 
-import com.example.taskproject.dataManagment.Task;
-import com.example.taskproject.dataManagment.TaskRepository;
+import com.example.taskproject.dataManagment.AnimeRecord;
+import com.example.taskproject.dataManagment.AnimeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.servlet.http.HttpServletResponse;
-
 @Controller
-@RequestMapping(path = "/demo")
+@RequestMapping(path = "/anime")
 public class MainController {
 
     @Autowired
-    private TaskRepository taskRepository;
+    private AnimeRepository animeRepository;
 
     @PostMapping(path = "/add")
     public @ResponseBody
-    Task addNewUser( @RequestBody Task task) {
-//        System.out.println("Text:"+text+"Im:"+importance+"ch:"+checked);
-//        Task n = new Task();
-//        n.setText(text);
-//        n.setImportance(importance);
-//        n.setChecked(checked);
-        System.out.println(task.toString());
-        taskRepository.save(task);
-        return task;
+    AnimeRecord addNewUser(@RequestBody AnimeRecord animeRecord) {
+        animeRepository.save(animeRecord);
+        return animeRecord;
     }
 
 
 
     @GetMapping
-    public Task empty(){
+    public AnimeRecord empty(){
         return null;
     }
 
     @GetMapping("/all")
     public @ResponseBody
-    Iterable<Task> getAllUsers() {
-        return taskRepository.findAll();
+    Iterable<AnimeRecord> getAllAnime() {
+        return animeRepository.findAll();
     }
 
     @GetMapping("{id}")
-    public @ResponseBody Task getTaskById(@PathVariable Integer id){
-        return taskRepository.findById(id).orElse(null);
+    public @ResponseBody AnimeRecord getAnimeById(@PathVariable Integer id){
+        return animeRepository.findById(id).orElse(null);
     }
 
 
     @DeleteMapping("{id}")
     @ResponseBody
-    public Task deleteTask(@PathVariable int id){
-        if(taskRepository.existsById(id)){
-            Task tmp = taskRepository.findById(id).orElse(null);
-            taskRepository.deleteById(id);
+    public AnimeRecord deleteAnime(@PathVariable int id){
+        if(animeRepository.existsById(id)){
+            AnimeRecord tmp = animeRepository.findById(id).orElse(null);
+            animeRepository.deleteById(id);
             return tmp;
         }else
             return null;
